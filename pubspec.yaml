@@ -1,0 +1,10 @@
+name: spritely
+description: A pub package
+dependencies:
+  barback: '>=0.12.0 <0.13.0'
+  code_transformers: '>=0.1.1 <0.2.0'
+  image: '>=1.1.0 <2.0.0'
+  path: '>=1.1.0 <2.0.0'
+dev_dependencies:
+  mock: any
+  unittest: any
