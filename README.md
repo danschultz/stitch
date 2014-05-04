@@ -30,9 +30,11 @@ my_app/
     index.html
 ```
 
-To tell Spritely to generate a sprite sheet for all PNGs in `web/images/icons`, an HTML file must reference `web/images/icons.css`.
+To tell Spritely to generate a sprite sheet for all PNGs in `web/images/icons`, reference `web/images/icons.css` from an HTML file.
 
-To use the icon sprites in `index.html`:
+The generated CSS file contains classes that reference each sprite within the sheet. For each image, a class with the naming convention `{folder-name}-{image-name}` will be generated. Each class sets the element's `background-image`, `background-position`, `width` and `height`.
+
+Using the *star.png* and *info.png* sprites in `index.html`:
 
 ```
 <html>
@@ -40,6 +42,10 @@ To use the icon sprites in `index.html`:
     <title>My App</title>
     <link rel="stylesheet" href="images/icons.css">
   </head>
+  <body>
+  	<div class="icons-star"></div>
+  	<div class="icons-info"></div>
+  </body>
 </html>
 ```
 
