@@ -5,44 +5,44 @@ class HtmlInspector extends InspectorTransformer {
 
   RegExp get matcher => new RegExp(r'<link .*href="(.+\.css)">');
 
-  Future<Asset> generateHelper(Transform transform, SpriteSheet spriteSheet) {
-    return spriteSheet.readAssetsAsSprites().toList().then((sprites) {
-      var css = new StringBuffer();
+  HtmlInspector(SpriteSheetEngine spriteSheetEngine) : super(spriteSheetEngine);
 
-      // .name-asset,
-      // .name-asset
-      css.writeAll(sprites
-          .take(sprites.length - 1)
-          .map((sprite) => _imageClass(spriteSheet, sprite)), ",\n");
+  Asset generateHelper(AssetId id, SpriteSheet spriteSheet) {
+    var css = new StringBuffer();
 
-      // ,
-      if (sprites.length > 1) {
-        css.writeln(",");
-      }
+    // .name-asset,
+    // .name-asset
+    css.writeAll(spriteSheet.sprites
+        .take(spriteSheet.sprites.length - 1)
+        .map((sprite) => _imageClass(spriteSheet, sprite)), ",\n");
 
-      // .name-asset { ... }
-      css.write(_cssBlock(spriteSheet, sprites.last, [
-        "background-image: url('${pathos.basename(spriteSheet.id.path)}');",
-        "background-repeat: no-repeat;"
+    // ,
+    if (spriteSheet.sprites.length > 1) {
+      css.writeln(",");
+    }
+
+    // .name-asset { ... }
+    css.write(_cssBlock(spriteSheet, spriteSheet.sprites.last, [
+      "background-image: url('${spriteSheet.name}.png');",
+      "background-repeat: no-repeat;"
+    ]));
+
+    css.writeln();
+
+    // .name-asset {
+    //   width: ...;
+    //   height: ...;
+    //   background-position: ...;
+    // }
+    for (var sprite in spriteSheet.sprites) {
+      css.writeln(_cssBlock(spriteSheet, sprite, [
+        "width: ${sprite.bounds.width}px;",
+        "height: ${sprite.bounds.height}px;",
+        "background-position: ${-sprite.bounds.left}px ${-sprite.bounds.top}px;"
       ]));
+    }
 
-      css.writeln();
-
-      // .name-asset {
-      //   width: ...;
-      //   height: ...;
-      //   background-position: ...;
-      // }
-      for (var sprite in sprites) {
-        css.writeln(_cssBlock(spriteSheet, sprite, [
-          "width: ${sprite.bounds.width}px;",
-          "height: ${sprite.bounds.height}px;",
-          "background-position: ${-sprite.bounds.left}px ${-sprite.bounds.top}px;"
-        ]));
-      }
-
-      return new Asset.fromString(spriteSheet.id.changeExtension(".css"), css.toString());
-    });
+    return new Asset.fromString(id.changeExtension(".css"), css.toString());
   }
 
   String _imageClass(SpriteSheet spriteSheet, Sprite sprite) {
