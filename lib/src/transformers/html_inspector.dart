@@ -5,7 +5,8 @@ class HtmlInspector extends InspectorTransformer {
 
   RegExp get matcher => new RegExp(r'<link .*href="(.+\.css)">');
 
-  HtmlInspector(SpriteSheetEngine spriteSheetEngine) : super(spriteSheetEngine);
+  HtmlInspector(SpriteSheetEngine spriteSheetEngine, SpriteAssetProvider spritelyAssetProvider) :
+    super(spriteSheetEngine, spritelyAssetProvider);
 
   Asset generateHelper(AssetId id, SpriteSheet spriteSheet) {
     var css = new StringBuffer();

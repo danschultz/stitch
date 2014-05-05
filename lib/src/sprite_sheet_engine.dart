@@ -9,35 +9,12 @@ import 'package:spritely/src/sprite_sheet.dart';
 import 'package:image/image.dart';
 
 abstract class SpriteSheetEngine {
-  Future<bool> isSpriteable(AssetId id, Transform transform);
-  Future<SpriteSheet> generate(AssetId id, Transform transform);
+  Future<SpriteSheet> generate(AssetId id, Iterable<Asset> assets);
 }
 
 class SpritelySpriteSheetEngine extends SpriteSheetEngine {
-  Future<bool> isSpriteable(AssetId id, Transform transform) {
-    return _listPngFiles(_spriteDirectoryForAsset(id, transform)).toList()
-        .then((files) => files.isNotEmpty)
-        .catchError((_) => false);
-  }
-
-  Future<SpriteSheet> generate(AssetId id, Transform transform) {
-    var spriteDirectory = _spriteDirectoryForAsset(id, transform);
-
-    return _readPngFilesAsAssets(spriteDirectory, transform)
-        .then((assets) => _layoutAssetsAsSprites(assets))
-        .then((sprites) => new SpriteSheet(pathos.basenameWithoutExtension(id.path), sprites));
-  }
-
-  Directory _spriteDirectoryForAsset(AssetId id, Transform transform) {
-    return new Directory(pathos.withoutExtension(id.path));
-  }
-
-  Stream<File> _listPngFiles(Directory directory) => directory.list()
-      .where((file) => pathos.extension(file.path).toLowerCase() == ".png");
-
-  Future<List<Asset>> _readPngFilesAsAssets(Directory directory, Transform transform) => _listPngFiles(directory)
-      .asyncMap((file) => transform.getInput(new AssetId(transform.primaryInput.id.package, file.path)))
-      .toList();
+  Future<SpriteSheet> generate(AssetId id, Iterable<Asset> assets) => _layoutAssetsAsSprites(assets)
+      .then((sprites) => new SpriteSheet(pathos.basenameWithoutExtension(id.path), sprites));
 
   Stream<Image> _convertAssetsToImages(List<Asset> assets) => new Stream.fromIterable(assets)
       .asyncMap((Asset image) => image.read().first)

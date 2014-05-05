@@ -2,8 +2,9 @@ part of spritely.transformer;
 
 abstract class InspectorTransformer extends Transformer {
   SpriteSheetEngine _spriteSheetEngine;
+  SpriteAssetProvider _spriteAssetProvider;
 
-  InspectorTransformer(this._spriteSheetEngine);
+  InspectorTransformer(this._spriteSheetEngine, this._spriteAssetProvider);
 
   /// The matcher that's run on an asset's contents, where the matcher's
   /// first group is expected to be a reference to a helper file.
@@ -16,18 +17,17 @@ abstract class InspectorTransformer extends Transformer {
       return uriToAssetId(transform.primaryInput.id, match[1], transform.logger, null);
     });
 
-    return Future.forEach(helperAssets, (asset) =>
-        _spriteSheetEngine.isSpriteable(asset, transform).then((isSpriteable) {
-          if (isSpriteable) {
-            return _spriteSheetEngine.generate(asset, transform).then((spriteSheet) {
-              // Generate the PNG for the sprite sheet.
-              _addOutput(transform, _generateImage(asset, spriteSheet));
+    return Future.forEach(helperAssets, (asset) => _spriteAssetProvider(asset, transform).then((assets) {
+      if (assets.isNotEmpty) {
+        return _spriteSheetEngine.generate(asset, assets).then((spriteSheet) {
+          // Generate the PNG for the sprite sheet.
+          _addOutput(transform, _generateImage(asset, spriteSheet));
 
-              // Generate the sprite sheet helper.
-              _addOutput(transform, generateHelper(asset, spriteSheet));
-            });
-          }
-        }));
+          // Generate the sprite sheet helper.
+          _addOutput(transform, generateHelper(asset, spriteSheet));
+        });
+      }
+    }));
   });
 
   Asset _generateImage(AssetId id, SpriteSheet spriteSheet) {
