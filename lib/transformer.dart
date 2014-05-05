@@ -1,19 +1,19 @@
-library spritely.transformer;
+library stitch.transformer;
 
 import 'dart:async';
 import 'package:barback/barback.dart';
 import 'package:path/path.dart' as pathos;
-import 'package:spritely/src/sprite_sheet_engine.dart';
-import 'package:spritely/src/sprite_sheet.dart';
 import 'package:code_transformers/assets.dart';
-import 'package:spritely/src/sprite_asset_provider.dart';
+import 'package:stitch/src/sprite_sheet_engine.dart';
+import 'package:stitch/src/sprite_sheet.dart';
+import 'package:stitch/src/sprite_asset_provider.dart';
 
 part 'src/transformers/inspector_transformer.dart';
 part 'src/transformers/html_inspector.dart';
 
-class SpritelyTransformer extends TransformerGroup {
-  SpritelyTransformer() : super([
-    [new HtmlInspector(new SpritelySpriteSheetEngine(), new SpritelyAssetProvider())]
+class StitchTransformer extends TransformerGroup {
+  StitchTransformer() : super([
+    [new HtmlInspector(new StitchSpriteSheetEngine(), new StitchAssetProvider())]
   ]);
-  SpritelyTransformer.asPlugin() : this();
+  StitchTransformer.asPlugin() : this();
 }

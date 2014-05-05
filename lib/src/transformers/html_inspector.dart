@@ -1,12 +1,12 @@
-part of spritely.transformer;
+part of stitch.transformer;
 
 class HtmlInspector extends InspectorTransformer {
   String get allowedExtensions => ".html .htm";
 
   RegExp get matcher => new RegExp(r'<link .*href="(.+\.css)">');
 
-  HtmlInspector(SpriteSheetEngine spriteSheetEngine, SpriteAssetProvider spritelyAssetProvider) :
-    super(spriteSheetEngine, spritelyAssetProvider);
+  HtmlInspector(SpriteSheetEngine spriteSheetEngine, SpriteAssetProvider spriteAssetProvider) :
+    super(spriteSheetEngine, spriteAssetProvider);
 
   Asset generateHelper(AssetId id, SpriteSheet spriteSheet) {
     var css = new StringBuffer();

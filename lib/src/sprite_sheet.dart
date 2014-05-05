@@ -1,4 +1,4 @@
-library spritely.sprite_sheet;
+library stitch.sprite_sheet;
 
 import 'dart:math';
 import 'package:image/image.dart';

@@ -1,18 +1,17 @@
-library spritely.sprite_sheet_engine;
+library stitch.sprite_sheet_engine;
 
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 import 'package:barback/barback.dart';
 import 'package:path/path.dart' as pathos;
-import 'package:spritely/src/sprite_sheet.dart';
+import 'package:stitch/src/sprite_sheet.dart';
 import 'package:image/image.dart';
 
 abstract class SpriteSheetEngine {
   Future<SpriteSheet> generate(AssetId id, Iterable<Asset> assets);
 }
 
-class SpritelySpriteSheetEngine extends SpriteSheetEngine {
+class StitchSpriteSheetEngine extends SpriteSheetEngine {
   Future<SpriteSheet> generate(AssetId id, Iterable<Asset> assets) => _layoutAssetsAsSprites(assets)
       .then((sprites) => new SpriteSheet(pathos.basenameWithoutExtension(id.path), sprites));
 

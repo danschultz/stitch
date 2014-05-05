@@ -1,4 +1,4 @@
-library spritely.sprite_asset_provider;
+library stitch.sprite_asset_provider;
 
 import 'dart:async';
 import 'dart:io';
@@ -9,7 +9,7 @@ abstract class SpriteAssetProvider {
   Future<List<Asset>> call(AssetId asset, Transform transform);
 }
 
-class SpritelyAssetProvider extends SpriteAssetProvider {
+class StitchAssetProvider extends SpriteAssetProvider {
   Future<List<Asset>> call(AssetId asset, Transform transform) {
     var spriteDirectory = _spriteDirectoryForAsset(asset, transform);
 

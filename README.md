@@ -1,21 +1,21 @@
-# Spritely
-Spritely is a Dart package that uses transformers to generate CSS sprite sheets.
+# Stitch
+Stitch is a Dart package that uses transformers to generate CSS sprite sheets.
 
 ## Configuration
-Add Spritely to your `pubspec.yaml`.
+Add Stitch to your `pubspec.yaml`.
 
 ```
 name: my_app
 description: A web application
 dependencies:
   browser: any
-  spritely: any
+  stitch: any
 transformers:
-- spritely
+- stitch
 ```
 
 ## Usage
-Spritely looks for links to a sprite sheet's CSS file. If one is found, it'll generate a CSS file and sprite sheet with all the PNGs that are contained within the directory of the same name as the sprite sheet.
+Stitch looks for links to a sprite sheet's CSS file. If one is found, it'll generate a CSS file and sprite sheet with all the PNGs that are contained within the directory of the same name as the sprite sheet.
 
 For example, lets say you have a Dart application with the following folder structure:
 
@@ -30,7 +30,7 @@ my_app/
     index.html
 ```
 
-To tell Spritely to generate a sprite sheet for all PNGs in `web/images/icons`, reference `web/images/icons.css` from an HTML file.
+To tell Stitch to generate a sprite sheet for all PNGs in `web/images/icons`, reference `web/images/icons.css` from an HTML file.
 
 The generated CSS file contains classes that reference each sprite within the sheet. For each image, a class with the naming convention `{folder-name}-{image-name}` will be generated. Each class sets the element's `background-image`, `background-position`, `width` and `height`.
 

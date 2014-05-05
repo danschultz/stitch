@@ -1,8 +1,8 @@
-name: spritely
-description: A pub transformer that generates CSS sprite sheets.
+name: stitch
 version: 0.1.0-dev
 author: Dan Schultz <schultz.t.dan@gmail.com>
-homepage: http://www.github.com/danschultz/spritely
+homepage: http://www.github.com/danschultz/stitch
+description: A pub transformer that generates CSS sprite sheets.
 dependencies:
   barback: '>=0.12.0 <0.14.0'
   code_transformers: '>=0.1.1 <0.2.0'

@@ -1,4 +1,4 @@
-part of spritely.transformer;
+part of stitch.transformer;
 
 abstract class InspectorTransformer extends Transformer {
   SpriteSheetEngine _spriteSheetEngine;
