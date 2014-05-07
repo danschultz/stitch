@@ -90,8 +90,11 @@ void main() => describe("HtmlInspector", () {
 
     describe("when provider returns list of assets", () {
       beforeEach(() => buildTransformer(htmlWithCss,
-          [createAsset("images/icons/info.png")],
-          new SpriteSheet("spritesheet", [new Sprite("info.png", new Image(100, 100), new Point(0, 0))])));
+          [createAsset("images/icons/info.png"), createAsset("images/icons/star.png")],
+          new SpriteSheet("spritesheet", [
+            new Sprite("info.png", new Image(100, 100), new Point(0, 0)),
+            new Sprite("star.png", new Image(100, 100), new Point(0, 100))
+          ])));
 
       it("adds an output for images/icons.css", () {
         transformer.apply(transform).then(expectAsync((_) {
