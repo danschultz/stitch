@@ -2,7 +2,7 @@
 Stitch is a Dart package that uses transformers to generate CSS sprite sheets.
 
 ## Configuration
-Add Stitch to your `pubspec.yaml`.
+Add Stitch as a dependency and transformer to your `pubspec.yaml`.
 
 ```
 name: my_app
@@ -15,7 +15,7 @@ transformers:
 ```
 
 ## Usage
-Stitch looks for links to a sprite sheet's CSS file. If one is found, it'll generate a CSS file and sprite sheet with all the PNGs that are contained within the directory of the same name as the sprite sheet.
+To generate a CSS sprite sheet, have your HTML reference a CSS file with the same name as a directory that has your sprite images.
 
 For example, lets say you have a Dart application with the following folder structure:
 
@@ -30,9 +30,9 @@ my_app/
     index.html
 ```
 
-To tell Stitch to generate a sprite sheet for all PNGs in `web/images/icons`, reference `web/images/icons.css` from an HTML file.
+To tell Stitch to generate a sprite sheet for all PNGs in `web/images/icons`, just reference `web/images/icons.css` from an HTML file.
 
-The generated CSS file contains classes that reference each sprite within the sheet. For each image, a class with the naming convention `{folder-name}-{image-name}` will be generated. Each class sets the element's `background-image`, `background-position`, `width` and `height`.
+The generated CSS file contains classes that reference the images within the sheet sheet. For each image, a class with the naming convention `{folder-name}-{image-name}` will be generated. Each class sets the element's `background-image`, `background-position`, `width` and `height`.
 
 Using the *star.png* and *info.png* sprites in `index.html`:
 
