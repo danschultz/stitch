@@ -15,7 +15,7 @@ class HtmlInspector extends InspectorTransformer {
     // .name-asset
     css.writeAll(spriteSheet.sprites
         .take(spriteSheet.sprites.length - 1)
-        .map((sprite) => _imageClass(spriteSheet, sprite)), ",\n");
+        .map((sprite) => SpriteSheet.className(spriteSheet, sprite)), ",\n");
 
     // ,
     if (spriteSheet.sprites.length > 1) {
@@ -46,13 +46,9 @@ class HtmlInspector extends InspectorTransformer {
     return new Asset.fromString(id.changeExtension(".css"), css.toString());
   }
 
-  String _imageClass(SpriteSheet spriteSheet, Sprite sprite) {
-    return ".${spriteSheet.name}-${pathos.basenameWithoutExtension(sprite.name)}";
-  }
-
   String _cssBlock(SpriteSheet spriteSheet, Sprite sprite, Iterable<String> lines) {
     var css = new StringBuffer()
-        ..writeln("${_imageClass(spriteSheet, sprite)} {")
+        ..writeln("${SpriteSheet.className(spriteSheet, sprite)} {")
         ..writeAll(lines.map((line) => "  $line"), "\n")
         ..writeln()
         ..writeln("}");

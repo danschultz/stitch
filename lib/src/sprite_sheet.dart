@@ -2,8 +2,12 @@ library stitch.sprite_sheet;
 
 import 'dart:math';
 import 'package:image/image.dart';
+import 'package:path/path.dart' as pathos;
 
 class SpriteSheet {
+  static String className(SpriteSheet spriteSheet, Sprite sprite) =>
+      ".${spriteSheet.name}-${pathos.basenameWithoutExtension(sprite.name)}";
+
   final String name;
   final Iterable<Sprite> sprites;
 
