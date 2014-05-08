@@ -24,19 +24,19 @@ void main() => describe("HtmlInspector", () {
       transformer = new HtmlInspector(new TestSpriteSheetEngine(), new StitchAssetProvider());
     });
 
-    it("returns true for HTML assets", () {
+    it("completes with true for HTML assets", () {
       expect(
           transformer.isPrimary(createAsset("index.html")),
           completion(isTrue));
     });
 
-    it("returns true for HTM assets", () {
+    it("completes with true for HTM assets", () {
       expect(
           transformer.isPrimary(createAsset("index.htm")),
           completion(isTrue));
     });
 
-    it("returns false for non-HTML and non-HTM assets", () {
+    it("completes with false for non-HTML and non-HTM assets", () {
       expect(
           transformer.isPrimary(createAsset("index.dart")),
           completion(isFalse));
@@ -50,7 +50,7 @@ void main() => describe("HtmlInspector", () {
     Mock primaryInput;
     SpriteAssetProviderMock provider;
 
-    void buildTransformer(String html, List<Asset> assets, [SpriteSheet spriteSheet]) {
+    void buildTransformer(String html, {List<Asset> assets: const [], SpriteSheet spriteSheet}) {
       primaryInput.when(callsTo("readAsString")).alwaysReturn(new Future.value(html));
       var spriteSheetEngine = new TestSpriteSheetEngine()
           ..when(callsTo("generate")).alwaysReturn(new Future.value(spriteSheet));
@@ -69,7 +69,7 @@ void main() => describe("HtmlInspector", () {
     });
 
     describe("when primary input has linked stylesheets", () {
-      beforeEach(() => buildTransformer(htmlWithCss, []));
+      beforeEach(() => buildTransformer(htmlWithCss));
 
       it("requests provider for assets", () {
         transformer.apply(transform).then(expectAsync((_) => provider
@@ -79,9 +79,9 @@ void main() => describe("HtmlInspector", () {
     });
 
     describe("when provider returns empty list of assets", () {
-      beforeEach(() => buildTransformer(htmlWithCss, []));
+      beforeEach(() => buildTransformer(htmlWithCss));
 
-      it("no outputs are added to transform", () {
+      it("doesn't add any outputs", () {
         transformer.apply(transform).then(expectAsync((_) {
           transform.getLogs(callsTo("addOutput")).verify(neverHappened);
         }));
@@ -89,9 +89,10 @@ void main() => describe("HtmlInspector", () {
     });
 
     describe("when provider returns list of assets", () {
-      beforeEach(() => buildTransformer(htmlWithCss,
-          [createAsset("images/icons/info.png"), createAsset("images/icons/star.png")],
-          new SpriteSheet("spritesheet", [
+      beforeEach(() => buildTransformer(
+          htmlWithCss,
+          assets: [createAsset("images/icons/info.png"), createAsset("images/icons/star.png")],
+          spriteSheet: new SpriteSheet("spritesheet", [
             new Sprite("info.png", new Image(100, 100), new Point(0, 0)),
             new Sprite("star.png", new Image(100, 100), new Point(0, 100))
           ])));
@@ -118,13 +119,13 @@ Matcher _expectAsset(AssetId id) => predicate((Asset asset) {
 });
 
 class SpriteAssetProviderMock extends Mock implements SpriteAssetProvider {
-
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class TransformMock extends Mock implements Transform {
-
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class TestSpriteSheetEngine extends Mock implements SpriteSheetEngine {
-
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
