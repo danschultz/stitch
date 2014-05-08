@@ -15,7 +15,7 @@ transformers:
 ```
 
 ## Usage
-To generate a CSS sprite sheet, have your HTML reference a CSS file with the same name as a directory that has your sprite images.
+To generate a CSS sprite sheet, have your HTML reference a CSS file with the same name as a directory containing your sprite images.
 
 For example, lets say you have a Dart application with the following folder structure:
 
@@ -32,7 +32,7 @@ my_app/
 
 To tell Stitch to generate a sprite sheet for all PNGs in `web/images/icons`, just reference `web/images/icons.css` from an HTML file.
 
-The generated CSS file contains classes that reference the images within the sheet sheet. For each image, a class with the naming convention `{folder-name}-{image-name}` will be generated. Each class sets the element's `background-image`, `background-position`, `width` and `height`.
+The generated CSS file contains classes that reference the images within the sprite sheet. For each image, a class with the naming convention `{folder-name}-{image-name}` will be generated. Each class sets the element's `background-image`, `background-position`, `width` and `height`.
 
 Using the *star.png* and *info.png* sprites in `index.html`:
 
