@@ -13,7 +13,7 @@ import 'package:stitch/src/sprite_sheet.dart';
 import 'package:image/image.dart';
 
 void main() => describe("HtmlInspector", () {
-  Transformer transformer;
+  HtmlInspector transformer;
 
   Asset createAsset(String path, [String content]) {
     return new Asset.fromString(new AssetId("my_package", path), content);
@@ -62,7 +62,7 @@ void main() => describe("HtmlInspector", () {
     beforeEach(() {
       transformer = new HtmlInspector(new StitchSpriteSheetEngine(), new StitchAssetProvider());
       primaryInput = new Mock()
-          ..when(callsTo("get id")).alwaysReturn(new AssetId("my_package", "index.html"));
+          ..when(callsTo("get id")).alwaysReturn(new AssetId("my_package", "web/index.html"));
       transform = new TransformMock()
           ..when(callsTo("get primaryInput")).alwaysReturn(primaryInput)
           ..when(callsTo("get logger")).alwaysReturn(new TransformLogger((id, level, message, span) {}));
@@ -73,7 +73,7 @@ void main() => describe("HtmlInspector", () {
 
       it("requests provider for assets", () {
         transformer.apply(transform).then(expectAsync((_) => provider
-            .getLogs(callsTo("call", new AssetId("my_package", "images/icons.css")))
+            .getLogs(callsTo("call", new AssetId("my_package", "web/images/icons.css")))
             .verify(happenedOnce)));
       });
     });
@@ -91,22 +91,22 @@ void main() => describe("HtmlInspector", () {
     describe("when provider returns list of assets", () {
       beforeEach(() => buildTransformer(
           htmlWithCss,
-          assets: [createAsset("images/icons/info.png"), createAsset("images/icons/star.png")],
+          assets: [createAsset("web/images/icons/info.png"), createAsset("web/images/icons/star.png")],
           spriteSheet: new SpriteSheet("spritesheet", [
             new Sprite("info.png", new Image(100, 100), new Point(0, 0)),
             new Sprite("star.png", new Image(100, 100), new Point(0, 100))
           ])));
 
-      it("adds an output for images/icons.css", () {
+      it("adds an output for web/images/icons.css", () {
         transformer.apply(transform).then(expectAsync((_) {
-          var expectation = _expectAsset(new AssetId("my_package", "images/icons.css"));
+          var expectation = _expectAsset(new AssetId("my_package", "web/images/icons.css"));
           transform.getLogs(callsTo("addOutput", expectation)).verify(happenedOnce);
         }));
       });
 
-      it("adds an output for images/icons.png", () {
+      it("adds an output for web/images/icons.png", () {
         transformer.apply(transform).then(expectAsync((_) {
-          var expectation = _expectAsset(new AssetId("my_package", "images/icons.png"));
+          var expectation = _expectAsset(new AssetId("my_package", "web/images/icons.png"));
           transform.getLogs(callsTo("addOutput", expectation)).verify(happenedOnce);
         }));
       });
