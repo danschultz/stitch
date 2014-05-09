@@ -1,9 +1,11 @@
 library spritely.tests;
 
 import 'html_inspector_test.dart' as htmlInspectorTest;
-import 'sprite_sheet_test.dart' as spriteSheetTest;
+import 'output_test.dart' as outputTest;
+import 'css_output_test.dart' as cssOutputTest;
 
 void main() {
   htmlInspectorTest.main();
-  spriteSheetTest.main();
+  outputTest.main();
+  cssOutputTest.main();
 }
