@@ -1,4 +1,4 @@
-part of stitch.transformer;
+part of stitch.transformers;
 
 class HtmlInspector extends InspectorTransformer {
   String get allowedExtensions => ".html .htm";

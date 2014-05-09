@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:barback/barback.dart';
 import 'package:guinness/guinness.dart';
 import 'package:unittest/unittest.dart' hide expect;
-import 'package:stitch/transformer.dart';
+import 'package:stitch/src/transformers.dart';
 import 'package:stitch/src/sprite_asset_provider.dart';
 import 'package:stitch/src/sprite_sheet_engine.dart';
 import 'package:mock/mock.dart';
