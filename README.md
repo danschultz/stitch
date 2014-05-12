@@ -15,7 +15,7 @@ transformers:
 ```
 
 ## Usage
-By default, Stitch will look for linked sprite sheets ing your HTML files. The linked sprite sheet must have the same name as the directory containing your sprites.
+By default, Stitch will look for linked sprite sheets in your HTML files. Linked sprite sheets must have the same name as the directory containing your sprites.
 
 For example, lets say you have a Dart application with the following folder structure:
 
