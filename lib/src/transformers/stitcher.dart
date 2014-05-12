@@ -7,7 +7,7 @@ class Stitcher extends Transformer implements LazyTransformer {
 
   Stitcher.allFormats() : this([new PngOutput(), new CssOutput()]);
 
-  String get allowedExtensions => ".stitch";
+  String get allowedExtensions => ".stitch .stitch.yaml";
 
   Future declareOutputs(DeclaringTransform transform) {
     return transform.primaryInput.readAsString().then((yaml) {
