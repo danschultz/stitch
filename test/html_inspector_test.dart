@@ -102,8 +102,8 @@ void main() => describe("HtmlInspector", () {
               .then((List<Asset> assets) => assets.first.readAsString())
               .then(expectAsync((yaml) {
                 var stitch = new Stitch.fromYaml(yaml);
-                expect(stitch.assets, orderedEquals([new AssetId("my_package", "web/images/icons/info.png"),
-                                                     new AssetId("my_package", "web/images/icons/star.png")]));
+                expect(stitch.assetPaths, orderedEquals(["icons/info.png",
+                                                         "icons/star.png"]));
               }));
         });
 

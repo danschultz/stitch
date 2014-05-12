@@ -18,13 +18,15 @@ void main() => describe("Output", () {
     Stitch stitch;
 
     beforeEach(() {
-      var assets = [new AssetId("my_package", "star.png"), new AssetId("my_package", "info.png")];
+      var assets = ["star.png", "info.png"];
       stitch = new Stitch(assets, allFormats);
       primaryInput = new Asset.fromString(new AssetId("my_package", "stuff.stitch"), "");
       transform = new TransformMock()
           ..when(callsTo("get primaryInput")).alwaysReturn(primaryInput)
-          ..when(callsTo("readInput", assets.first)).thenReturn(new Stream.fromIterable([_testImage]))
-          ..when(callsTo("readInput", assets.last)).thenReturn(new Stream.fromIterable([_testImage]));
+          ..when(callsTo("readInput", new AssetId("my_package", assets.first))).thenReturn(
+              new Stream.fromIterable([_testImage]))
+          ..when(callsTo("readInput", new AssetId("my_package", assets.last))).thenReturn(
+              new Stream.fromIterable([_testImage]));
     });
 
     void render(void expectations(List<Sprite> sprites, Asset primaryInput)) {

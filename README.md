@@ -55,24 +55,23 @@ Use `.stitch` files to output specialized sprite sheets. A `.stitch` file is jus
 **Example:** A `.stitch` file.
 
 ```
-assets:
+asset_paths:
   - images/icons/info.png
   - images/icons/star.png
-  - social/icons/facebook.png
+  - packages/social/icons/facebook.png
 formats:
   - css
   - sass
 ```
 
-When transformed, assets will be outputted with the same name as the Stitch file. For instance, if the example file was located at `web/icons.stitch`, Stitch would output `web/icons.png`, `web/icons.css` and `web/icons.sass`.
+When transformed, assets will be outputted with the same name as the Stitch file. For instance, if the example `.stitch` file was located at `web/icons.stitch`, the transformer would output `web/icons.png`, `web/icons.css` and `web/icons.sass`.
 
 Stitch files support the following fields:
 
-* `assets`: A list of PNGs to include in the sprite sheet. Paths follow the same formatting as paths in [Barback](https://www.dartlang.org/tools/pub/assets-and-transformers.html#how-to-refer-to-assets).
+* `asset_paths`: A list of paths to PNGs that will be included in the sprite sheet. Paths follow the same formatting rules as [Barback](https://www.dartlang.org/tools/pub/assets-and-transformers.html#how-to-refer-to-assets).
 * `formats`: A list of formats to output. Note, a PNG is always outputted.
 
 **Note:** Stitch will also recognize files ending with `.stitch.yaml`.
-
 
 ## Todo
 * Add support for SASS

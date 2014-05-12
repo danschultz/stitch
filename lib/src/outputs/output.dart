@@ -4,7 +4,8 @@ abstract class Output {
   String get extension;
 
   Future<Asset> render(Stitch stitch, Transform transform) {
-    var sortedAssets = _sortAssets(stitch.assets);
+    var assets = stitch.assetPaths.map((asset) => uriToAssetId(transform.primaryInput.id, asset, transform.logger, null));
+    var sortedAssets = _sortAssets(assets);
     return new Stream.fromIterable(sortedAssets)
         .asyncMap((asset) => transform.readInput(asset).first)
         .map((bytes) => decodePng(bytes))

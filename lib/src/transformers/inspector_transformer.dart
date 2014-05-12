@@ -16,7 +16,11 @@ abstract class InspectorTransformer extends Transformer {
       });
 
       var assets = new Stream.fromIterable(helperAssets)
-          .asyncMap((asset) => _spriteAssetProvider(asset, transform).then((assets) => [asset, assets]))
+          .asyncMap((asset) => _spriteAssetProvider(asset, transform).then((assets) {
+            var paths = assets.map((providedAsset) =>
+                pathos.relative(providedAsset.path, from: pathos.dirname(asset.path)));
+            return [asset, paths];
+          }))
           .where((tuple) => tuple.last.isNotEmpty)
           .map((tuple) {
             var stitch = new Stitch(tuple.last, allFormats);
