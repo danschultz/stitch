@@ -7,7 +7,7 @@ abstract class Output {
     var assets = stitch.assetPaths.map((asset) => uriToAssetId(transform.primaryInput.id, asset, transform.logger, null));
     var sortedAssets = _sortAssets(assets);
     return new Stream.fromIterable(sortedAssets)
-        .asyncMap((asset) => transform.readInput(asset).first)
+        .asyncMap((asset) => transform.readInput(asset).single)
         .map((bytes) => decodePng(bytes))
         .toList().then((images) {
           var imageMapping = new Map.fromIterables(sortedAssets, images);
