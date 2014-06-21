@@ -16,9 +16,7 @@ void main() => describe("HtmlInspector", () {
   Mock primaryInput;
   SpriteAssetProviderMock provider;
 
-  Asset createAsset(String path, [String content = ""]) {
-    return new Asset.fromString(new AssetId("my_package", path), content);
-  }
+  AssetId createAsset(String path) => new AssetId("my_package", path);
 
   void buildTransformer(String html, {List<AssetId> assets: const []}) {
     primaryInput.when(callsTo("readAsString")).alwaysReturn(new Future.value(html));

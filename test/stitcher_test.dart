@@ -12,17 +12,17 @@ void main() => describe("Stitcher", () {
     beforeEach(() => stitcher = new Stitcher.allFormats());
 
     it("completes with true for .stitch assets", () {
-      var asset = new Asset.fromString(new AssetId("my_package", "file.stitch"), "");
+      var asset = new AssetId("my_package", "file.stitch");
       expect(stitcher.isPrimary(asset), completion(isTrue));
     });
 
     it("completes with true for .stitch.yaml assets", () {
-      var asset = new Asset.fromString(new AssetId("my_package", "file.stitch.yaml"), "");
+      var asset = new AssetId("my_package", "file.stitch.yaml");
       expect(stitcher.isPrimary(asset), completion(isTrue));
     });
 
     it("completes with false for .yaml assets", () {
-      var asset = new Asset.fromString(new AssetId("my_package", "file.yaml"), "");
+      var asset = new AssetId("my_package", "file.yaml");
       expect(stitcher.isPrimary(asset), completion(isFalse));
     });
   });
