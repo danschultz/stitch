@@ -1,6 +1,6 @@
 part of stitch.transformers;
 
-class Stitcher extends Transformer implements LazyTransformer {
+class Stitcher extends Transformer {
   Iterable<Output> _supportedOutputs;
 
   Stitcher(this._supportedOutputs);
@@ -9,22 +9,13 @@ class Stitcher extends Transformer implements LazyTransformer {
 
   String get allowedExtensions => ".stitch .stitch.yaml";
 
-  Future declareOutputs(DeclaringTransform transform) {
-    return transform.primaryInput.readAsString().then((yaml) {
-      var stitch = new Stitch.fromYaml(yaml);
-      transform.declareOutput(transform.primaryInput.id.changeExtension(".png"));
-      stitch.formats
-          .map((format) => transform.primaryInput.id.changeExtension(".$format"))
-          .forEach((id) => transform.declareOutput(id));
-    });
-  }
-
   Future apply(Transform transform) {
     return transform.primaryInput.readAsString().then((contents) {
       // Don't include the stitch file in the build.
       transform.consumePrimary();
 
       var stitch = new Stitch.fromYaml(contents);
+
       var outputs = _supportedOutputs.where((output) => stitch.formats.contains(output.extension));
       var stopwatch = new Stopwatch()..start();
 
