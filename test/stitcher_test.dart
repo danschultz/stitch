@@ -11,13 +11,13 @@ void main() => describe("Stitcher", () {
   describe("isPrimary()", () {
     beforeEach(() => stitcher = new Stitcher.allFormats());
 
-    it("completes with true for .stitch assets", () {
-      var asset = new AssetId("my_package", "file.stitch");
+    it("completes with true for .ext.stitch assets", () {
+      var asset = new AssetId("my_package", "file.css.stitch");
       expect(stitcher.isPrimary(asset), completion(isTrue));
     });
 
-    it("completes with true for .stitch.yaml assets", () {
-      var asset = new AssetId("my_package", "file.stitch.yaml");
+    it("completes with true for .ext.stitch.yaml assets", () {
+      var asset = new AssetId("my_package", "file.css.stitch.yaml");
       expect(stitcher.isPrimary(asset), completion(isTrue));
     });
 

@@ -19,8 +19,8 @@ void main() => describe("Output", () {
 
     beforeEach(() {
       var assets = ["star.png", "info.png"];
-      stitch = new Stitch(assets, allFormats);
-      primaryInput = new Asset.fromString(new AssetId("my_package", "stuff.stitch"), "");
+      stitch = new Stitch(assets);
+      primaryInput = new Asset.fromString(new AssetId("my_package", "stuff.ext.stitch"), "");
       transform = new TransformMock()
           ..when(callsTo("get primaryInput")).alwaysReturn(primaryInput)
           ..when(callsTo("readInput", new AssetId("my_package", assets.first))).thenReturn(

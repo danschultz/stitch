@@ -87,9 +87,9 @@ void main() => describe("HtmlInspector", () {
           assets: [new AssetId("my_package", "web/images/icons/info.png"),
                    new AssetId("my_package", "web/images/icons/star.png")]));
 
-      it("adds an output for web/images/icons.stitch", () {
+      it("adds an output for web/images/icons.css.stitch", () {
         transformer.apply(transform).then(expectAsync((_) {
-          var expectation = _expectAsset(new AssetId("my_package", "web/images/icons.stitch"));
+          var expectation = _expectAsset(new AssetId("my_package", "web/images/icons.css.stitch"));
           transform.getLogs(callsTo("addOutput", expectation)).verify(happenedOnce);
         }));
       });
@@ -102,15 +102,6 @@ void main() => describe("HtmlInspector", () {
                 var stitch = new Stitch.fromYaml(yaml);
                 expect(stitch.assetPaths, orderedEquals(["icons/info.png",
                                                          "icons/star.png"]));
-              }));
-        });
-
-        it("lists css format", () {
-          transformer.apply(transform)
-              .then((assets) => assets.first.readAsString())
-              .then(expectAsync((yaml) {
-                var stitch = new Stitch.fromYaml(yaml);
-                expect(stitch.formats, contains(".css"));
               }));
         });
       });

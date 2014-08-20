@@ -19,7 +19,7 @@ void main() => describe("CssOutput", () {
     beforeEach(() {
       sprites = [new Sprite("info", new Image(100, 50), new Point(0, 0)),
                  new Sprite("star", new Image(25, 25), new Point(100, 50))];
-      primaryInput = new Asset.fromString(new AssetId("my_package", "path/to/some.stitch"), "");
+      primaryInput = new Asset.fromString(new AssetId("my_package", "path/to/some.css.stitch"), "");
       sheetName = pathos.basenameWithoutExtension(primaryInput.id.path);
     });
 

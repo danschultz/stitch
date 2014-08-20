@@ -1,17 +1,21 @@
 part of stitch.transformers;
 
-abstract class InspectorTransformer extends Transformer {
+class InspectorTransformer extends Transformer {
   SpriteAssetProvider _spriteAssetProvider;
-
-  InspectorTransformer(this._spriteAssetProvider);
 
   /// The matcher that's run on an asset's contents, where the matcher's
   /// first group is expected to be a reference to a helper file.
-  RegExp get matcher;
+  RegExp _matcher;
+
+  /// The type of format that the generated Stitch file will output. Should
+  /// be one of [CSS, SCSS].
+  String _outputExtension;
+
+  InspectorTransformer(this._spriteAssetProvider, this._matcher, this._outputExtension);
 
   Future apply(Transform transform) {
     return transform.primaryInput.readAsString().then((contents) {
-      var helperAssets = matcher.allMatches(contents).map((match) {
+      var helperAssets = _matcher.allMatches(contents).map((match) {
         return uriToAssetId(transform.primaryInput.id, match[1], transform.logger, null);
       });
 
@@ -23,8 +27,9 @@ abstract class InspectorTransformer extends Transformer {
           }))
           .where((tuple) => tuple.last.isNotEmpty)
           .map((tuple) {
-            var stitch = new Stitch(tuple.last, allFormats);
-            return new Asset.fromString(tuple.first.changeExtension(".stitch"), stitch.toYaml());
+            var stitch = new Stitch(tuple.last);
+            var id = tuple.first.changeExtension("$_outputExtension.stitch");
+            return new Asset.fromString(id, stitch.toYaml());
           })
           .asBroadcastStream();
 
