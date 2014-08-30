@@ -3,45 +3,36 @@ part of stitch.outputs;
 abstract class Output {
   String get extension;
 
-  Future<Asset> render(Stitch stitch, Transform transform) {
-    var assets = stitch.assetPaths.map((asset) => uriToAssetId(transform.primaryInput.id, asset, transform.logger, null));
-    var sortedAssets = _sortAssets(assets);
-    return new Stream.fromIterable(sortedAssets)
-        .asyncMap((asset) => transform.readInput(asset).single)
-        .map((bytes) => decodePng(bytes))
-        .toList().then((images) {
-          var imageMapping = new Map.fromIterables(sortedAssets, images);
-          return renderSprites(_layoutImages(imageMapping), transform.primaryInput);
-        });
+  Iterable<Asset> generate(Asset stitchAsset, Iterable<Sprite> sprites) {
+    var usageOutputId = buildUsageOutputId(stitchAsset);
+    var pngOutputId = buildPngOutputId(usageOutputId);
+
+    var usageAsset = new Asset.fromStream(usageOutputId, buildAsset(stitchAsset, sprites).read());
+    var pngAsset = _buildPngAsset(pngOutputId, sprites);
+
+    return [usageAsset, pngAsset];
   }
 
-  Asset renderSprites(Iterable<Sprite> sprites, Asset primaryInput);
+  Asset buildAsset(Asset stitchAsset, Iterable<Sprite> sprites);
 
-  Iterable<AssetId> _sortAssets(Iterable<AssetId> assets) => assets.toList()..sort((a, b) {
-    return Comparable.compare(pathos.basename(a.path), pathos.basename(b.path));
-  });
-
-  List<Sprite> _layoutImages(Map<AssetId, Image> images) {
-    var sprites = [];
-    var y = 0;
-
-    images.forEach((asset, image) {
-      var name = pathos.basenameWithoutExtension(asset.path);
-      var sprite = new Sprite(name, image, new Point(0, y));
-      sprites.add(sprite);
-      y += image.height;
-    });
-
-    return sprites;
+  AssetId buildUsageOutputId(Asset stitchAsset) {
+    // The most verbose input could be: icons.css.stitch.yaml
+    var directory = pathos.dirname(stitchAsset.id.path);
+    var spriteName = pathos.basename(stitchAsset.id.path).split(".").first;
+    return new AssetId(stitchAsset.id.package, pathos.join(directory, spriteName)).changeExtension(extension);
   }
-}
 
-class Sprite {
-  final String name;
-  final Image image;
-  final Point position;
+  AssetId buildPngOutputId(AssetId usageOutputId) => usageOutputId.addExtension(".png");
 
-  Rectangle get bounds => new Rectangle(position.x, position.y, image.width, image.height);
+  Asset _buildPngAsset(AssetId outputId, Iterable<Sprite> sprites) {
+    var size = sprites.map((sprite) => sprite.bounds)
+        .reduce((Rectangle value, Rectangle current) => value.boundingBox(current)) as Rectangle;
 
-  Sprite(this.name, this.image, this.position);
+    var image = new Image(size.width, size.height);
+    for (var sprite in sprites) {
+      copyInto(image, sprite.image, dstX: sprite.position.x, dstY: sprite.position.y, blend: false);
+    }
+
+    return new Asset.fromBytes(outputId, encodePng(image));
+  }
 }

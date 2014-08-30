@@ -5,11 +5,11 @@ import 'package:guinness/guinness.dart';
 import 'package:unittest/unittest.dart' hide expect;
 import 'package:stitch/src/transformers.dart';
 
-void main() => describe("Stitcher", () {
-  Stitcher stitcher;
+void main() => describe("StitchTransformer", () {
+  StitchTransformer stitcher;
 
   describe("isPrimary()", () {
-    beforeEach(() => stitcher = new Stitcher.allFormats());
+    beforeEach(() => stitcher = new StitchTransformer.allFormats());
 
     it("completes with true for .ext.stitch assets", () {
       var asset = new AssetId("my_package", "file.css.stitch");

@@ -1,8 +1,8 @@
 part of stitch.transformers;
 
-class HtmlInspector extends InspectorTransformer {
+class HtmlInspector extends RegExpInspector {
   String get allowedExtensions => ".html .htm";
 
   HtmlInspector(SpriteAssetProvider spriteAssetProvider) :
-    super(spriteAssetProvider, new RegExp(r'<link .*href="(.+\.css)">'), ".css");
+    super(new RegExp(r'<link .*href="(.+\.css)">'), spriteAssetProvider, ".css");
 }

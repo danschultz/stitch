@@ -1,46 +1,50 @@
 part of stitch.transformers;
 
-class InspectorTransformer extends Transformer {
+abstract class InspectorTransformer extends Transformer {
   SpriteAssetProvider _spriteAssetProvider;
 
-  /// The matcher that's run on an asset's contents, where the matcher's
-  /// first group is expected to be a reference to a helper file.
-  RegExp _matcher;
-
   /// The type of format that the generated Stitch file will output. Should
-  /// be one of [CSS, SCSS].
+  /// be one of [.css, .scss].
   String _outputExtension;
 
-  InspectorTransformer(this._spriteAssetProvider, this._matcher, this._outputExtension);
+  InspectorTransformer(this._spriteAssetProvider, this._outputExtension);
 
   Future apply(Transform transform) {
     return transform.primaryInput.readAsString().then((contents) {
-      var helperAssets = _matcher.allMatches(contents).map((match) {
-        return uriToAssetId(transform.primaryInput.id, match[1], transform.logger, null);
-      });
+      var usageAssets = findUsageAssets(transform, contents);
 
-      var assets = new Stream.fromIterable(helperAssets)
-          .asyncMap((asset) => _spriteAssetProvider(asset, transform).then((assets) {
-            var paths = assets.map((providedAsset) =>
-                pathos.relative(providedAsset.path, from: pathos.dirname(asset.path)));
-            return [asset, paths];
-          }))
+      var assets = new Stream.fromIterable(usageAssets)
+          .asyncMap((asset) {
+            return _spriteAssetProvider(asset, transform).then((assets) {
+              var paths = assets.map((providedAsset) =>
+              pathos.relative(providedAsset.path, from: pathos.dirname(asset.path)));
+              return [asset, paths];
+            });
+          })
           .where((tuple) => tuple.last.isNotEmpty)
           .map((tuple) {
-            var stitch = new Stitch(tuple.last);
-            var id = tuple.first.changeExtension("$_outputExtension.stitch");
+            var stitch = new Stitch(tuple.last, _outputExtension.substring(1));
+            var id = tuple.first.changeExtension("$_outputExtension.stitch.yaml");
             return new Asset.fromString(id, stitch.toYaml());
           })
           .asBroadcastStream();
 
       assets.forEach((asset) => _addOutput(transform, asset));
-      return assets.toList();
+
+      // Subclasses may rewrite the input. For instance, the SCSS inspector rewrites the
+      // imports to imported usage files.
+      return transformInput(transform, contents)
+          .then((_) => assets.toList());
     });
   }
 
+  Iterable<AssetId> findUsageAssets(Transform transform, String assetContents);
+
+  Future transformInput(Transform transform, String contents) => new Future.value();
+
   void _addOutput(Transform transform, Asset asset) {
     transform
-        ..logger.fine("Outputting ${asset.id}", asset: asset.id)
+        ..logger.info("Outputting ${asset.id}", asset: asset.id)
         ..addOutput(asset);
   }
 }

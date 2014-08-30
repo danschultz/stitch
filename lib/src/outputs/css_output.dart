@@ -4,9 +4,8 @@ class CssOutput extends Output {
   String get extension => ".css";
 
   @override
-  Asset renderSprites(Iterable<Sprite> sprites, Asset primaryInput) {
-    var outputId = primaryInput.id.changeExtension(extension);
-    var name = pathos.basenameWithoutExtension(outputId.path);
+  Asset buildAsset(Asset stitchAsset, Iterable<Sprite> sprites) {
+    var name = pathos.basenameWithoutExtension(stitchAsset.id.path).split(".").first;
     var css = new StringBuffer();
 
     // .name-asset,
@@ -22,7 +21,7 @@ class CssOutput extends Output {
 
     // .name-asset { ... }
     css.write(_cssBlock(_className(name, sprites.last), [
-      "background-image: url('$name.png');",
+      "background-image: url('$name.css.png');",
       "background-repeat: no-repeat;"
     ]));
 
@@ -41,7 +40,7 @@ class CssOutput extends Output {
       ]));
     }
 
-    return new Asset.fromString(outputId, css.toString());
+    return new Asset.fromString(stitchAsset.id, css.toString());
   }
 
   String _cssBlock(String className, Iterable<String> lines) {

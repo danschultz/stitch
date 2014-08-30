@@ -1,4 +1,4 @@
-library stitch.css_output_test;
+library stitch.scss_output_test;
 
 import 'dart:math';
 import 'package:barback/barback.dart';
@@ -11,7 +11,7 @@ import 'package:csslib/parser.dart';
 import 'package:unittest/unittest.dart' hide expect;
 import 'package:path/path.dart' as pathos;
 
-void main() => describe("CssOutput", () {
+void main() => describe("ScssOutput", () {
   describe("renderSprites()", () {
     List<Sprite> sprites;
     Asset primaryInput;
@@ -20,8 +20,8 @@ void main() => describe("CssOutput", () {
     beforeEach(() {
       sprites = [new Sprite("info", new Image(100, 50), new Point(0, 0)),
                  new Sprite("star", new Image(25, 25), new Point(100, 50))];
-      primaryInput = new Asset.fromString(new AssetId("my_package", "path/to/some.css.stitch"), "");
-      sheetName = pathos.basenameWithoutExtension(primaryInput.id.path).split(".").first;
+      primaryInput = new Asset.fromString(new AssetId("my_package", "path/to/some.scss.stitch"), "");
+      sheetName = pathos.basenameWithoutExtension(primaryInput.id.path);
     });
 
     void _testSpritesForStyle(Asset asset, String style, expectation(Sprite sprite, String value)) {
@@ -34,43 +34,24 @@ void main() => describe("CssOutput", () {
       }));
     }
 
-    Asset _renderOutput() => new CssOutput().generate(primaryInput, sprites).first;
+    Asset _renderOutput() => new ScssOutput().generate(primaryInput, sprites).first;
 
-    it("returns asset with a .css extension", () {
+    it("returns an asset with a .scss extension", () {
       var asset = _renderOutput();
-      expect(asset.id.extension, equals(".css"));
+      expect(asset.id.extension, equals(".scss"));
+    });
+
+    it("returns an asset prefixed with an underscore", () {
+      var asset = _renderOutput();
+      var name = pathos.basenameWithoutExtension(asset.id.path);
+      expect(name, startsWith("_"));
     });
 
     it("defines a class for each image", () {
       var asset = _renderOutput();
       asset.readAsString().then(expectAsync((content) {
         var styles = _parseStylesheet(content);
-        expect(styles.keys, unorderedEquals([".$sheetName-info", ".$sheetName-star"]));
       }));
-    });
-
-    it("defines the background-image for each image", () {
-      var asset = _renderOutput();
-      _testSpritesForStyle(asset, "background-image", (sprite, value) =>
-          expect(value.contains("$sheetName.css.png"), isTrue));
-    });
-
-    it("defines the width for each image", () {
-      var asset = _renderOutput();
-      _testSpritesForStyle(asset, "width", (sprite, value) =>
-          expect(value, equals("${sprite.bounds.width}px")));
-    });
-
-    it("defines the height for each image", () {
-      var asset = _renderOutput();
-      _testSpritesForStyle(asset, "height", (sprite, value) =>
-          expect(value, equals("${sprite.bounds.height}px")));
-    });
-
-    it("defines the background-position for each image", () {
-      var asset = _renderOutput();
-      _testSpritesForStyle(asset, "background-position", (sprite, value) =>
-          expect(value, equals("${-sprite.bounds.left}px ${-sprite.bounds.top}px")));
     });
   });
 });

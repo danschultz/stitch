@@ -4,17 +4,24 @@ import 'package:yaml/yaml.dart';
 
 class Stitch {
   final Iterable<String> assetPaths;
+  final String format;
 
-  Stitch(this.assetPaths);
+  String get formatExtension => format[0] == "." ? format : ".$format";
+
+  Stitch(this.assetPaths, this.format);
 
   factory Stitch.fromYaml(String yaml) {
     var data = loadYaml(yaml);
     var assetPaths = data["asset_paths"].toSet();
-    return new Stitch(assetPaths);
+    var format = data["format"];
+    return new Stitch(assetPaths, format);
   }
 
   String toYaml() {
     var yaml = new StringBuffer();
+
+    // Write the format
+    yaml.writeln("format: $format");
 
     // Write assets
     yaml.writeln("asset_paths:");
