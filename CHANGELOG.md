@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.0+5 (August 6, 2015)
+* Upgrade aging dependencies to support at least Dart 1.11.
+
 ## 0.2.0+3 (June 21, 2014)
 * Fix a deadlock error when generating sprite sheets with more than 32 images
 * Upgrade Barback to >=0.13.0 <0.14.0
