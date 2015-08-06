@@ -13,17 +13,20 @@ void main() => describe("StitchTransformer", () {
 
     it("completes with true for .ext.stitch assets", () {
       var asset = new AssetId("my_package", "file.css.stitch");
-      expect(stitcher.isPrimary(asset), completion(isTrue));
+      expect(stitcher.isPrimary(asset),
+             isTrue);
     });
 
     it("completes with true for .ext.stitch.yaml assets", () {
       var asset = new AssetId("my_package", "file.css.stitch.yaml");
-      expect(stitcher.isPrimary(asset), completion(isTrue));
+      expect(stitcher.isPrimary(asset),
+             isTrue);
     });
 
     it("completes with false for .yaml assets", () {
       var asset = new AssetId("my_package", "file.yaml");
-      expect(stitcher.isPrimary(asset), completion(isFalse));
+      expect(stitcher.isPrimary(asset),
+             isFalse);
     });
   });
 });

@@ -33,19 +33,19 @@ void main() => describe("HtmlInspector", () {
     it("completes with true for HTML assets", () {
       expect(
           transformer.isPrimary(createAsset("index.html")),
-          completion(isTrue));
+          isTrue);
     });
 
     it("completes with true for HTM assets", () {
       expect(
           transformer.isPrimary(createAsset("index.htm")),
-          completion(isTrue));
+          isTrue);
     });
 
     it("completes with false for non-HTML and non-HTM assets", () {
       expect(
           transformer.isPrimary(createAsset("index.dart")),
-          completion(isFalse));
+          isFalse);
     });
   });
 
