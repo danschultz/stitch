@@ -4,15 +4,15 @@ author: Dan Schultz <schultz.t.dan@gmail.com>
 description: A pub transformer that generates CSS sprite sheets.
 homepage: http://www.github.com/danschultz/stitch
 dependencies:
-  barback: '>=0.15.0 <0.16.0'
-  code_transformers: '>=0.2.0 <0.3.0'
-  image: '>=1.1.0 <2.0.0'
-  mustache: '>=0.1.8 <0.2.0'
-  path: '>=1.1.0 <2.0.0'
+  barback: ^0.15.0
+  code_transformers: ^0.2.0
+  image: ^1.1.0
+  mustache: ^0.1.8
+  path: ^1.1.0
   yaml: '>=0.9.0 <3.0.0'
 dev_dependencies:
-  csslib: '>=0.8.10 <0.9.0'
-  guinness: '>=0.1.2 <0.2.0'
-  hop: '>=0.30.4 <0.31.0'
-  mock: '>=0.10.0 <0.11.0'
-  unittest: '>=0.10.1 <0.11.0'
+  csslib: ^0.12.0
+  guinness: ^0.1.0
+  hop: ^0.30.0
+  mock: ^0.10.0
+  unittest: ^0.10.1

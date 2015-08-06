@@ -8,9 +8,10 @@ import 'stitch_transformer_test.dart' as stitcherTest;
 
 void main() {
   htmlInspectorTest.main();
-  // TODO - disable scss tests for now, because they don't work
-  //scssInspectorTest.main();
   cssOutputTest.main();
   scssOutputTest.main();
   stitcherTest.main();
+
+  // TODO(Dan): Need to investigate why scss tests are failing
+  // scssInspectorTest.main();
 }
